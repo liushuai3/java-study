@@ -1,11 +1,9 @@
 package cn.lcools.thread;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-import java.util.concurrent.locks.Condition;
-import cn.lcools.thread.Lock;
 
 /**
  * Created by liushuai3 on 2019/7/19.
@@ -92,7 +90,8 @@ public class BooleanLock implements Lock {
 
     @Override
     public List<Thread> getBlockedThreads() {
-        return blockedList;
+        //unmodifiableList 返回不可修改的list，防止对外暴露的引用进行修改list数据
+        return Collections.unmodifiableList(blockedList);
     }
 
 }
