@@ -1,7 +1,6 @@
-package cn.lcools.thread;
+package cn.lcools.thread.lock;
 
 import java.util.concurrent.TimeUnit;
-import java.util.stream.IntStream;
 
 /**
  * Created by liushuai3 on 2019/7/19.

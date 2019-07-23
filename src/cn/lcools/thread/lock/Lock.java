@@ -1,4 +1,4 @@
-package cn.lcools.thread;
+package cn.lcools.thread.lock;
 
 import java.util.List;
 import java.util.concurrent.TimeoutException;
