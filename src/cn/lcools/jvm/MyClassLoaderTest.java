@@ -2,6 +2,8 @@ package cn.lcools.jvm;
 
 /**
  * Created by liushuai3 on 2019/7/24.
+ * 自定义类加载器
+ * 遵循类加载的双亲委托机制
  */
 public class MyClassLoaderTest {
     public static void main(String[] args) throws Exception{
