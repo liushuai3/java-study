@@ -21,7 +21,7 @@ import java.lang.reflect.Method;
  */
 public class AnnotationTest {
 
-    @Test(timeout = 9)
+    @Test()
     public void test() throws Exception{
 
         Class<User> userClass = User.class;
