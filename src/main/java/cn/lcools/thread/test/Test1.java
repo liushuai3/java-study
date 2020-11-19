@@ -1,5 +1,7 @@
 package cn.lcools.thread.test;
 
+import java.util.concurrent.locks.LockSupport;
+
 /**
  * Copyright: Copyright (c) 2020
  *
@@ -15,43 +17,27 @@ package cn.lcools.thread.test;
  * 2020/11/19     liushuai           v1.0.0               修改原因
  */
 public class Test1 {
-    public static void main(String[] args) throws InterruptedException {
-        Object o = new Object();
+    static Thread threadA = null;
+    static Thread threadB = null;
 
-        Thread threadA = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for (int i = 0; i < 26; i++) {
-                    synchronized (o) {
-                        System.out.println(Thread.currentThread().getName() + ":" + (char) ('A' + i));
-                        try {
-                            o.notify();
-                            o.wait();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
+    public static void main(String[] args) throws InterruptedException {
+        threadA = new Thread(() -> {
+            for (int i = 0; i < 26; i++) {
+                System.out.println(Thread.currentThread().getName() + ":" + (char) ('A' + i));
+                while (threadB.getState() == Thread.State.NEW) {
                 }
+                LockSupport.unpark(threadB);
+                LockSupport.park(threadA);
             }
         }, "A");
-
-        Thread threadB = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                threadA.start();
-                for (int i = 1; i <= 26; i++) {
-                    synchronized (o) {
-                        try {
-                            o.wait();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        System.out.println(Thread.currentThread().getName() + ":" + i);
-                        o.notify();
-                    }
-                }
+        threadB = new Thread(() -> {
+            for (int i = 1; i <= 26; i++) {
+                LockSupport.park(threadB);
+                System.out.println(Thread.currentThread().getName() + ":" + i);
+                LockSupport.unpark(threadA);
             }
         }, "B");
+        threadA.start();
         threadB.start();
 
     }
